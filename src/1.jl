@@ -3,7 +3,7 @@ using GLFW, ModernGL
 
 # we change the triangle to a cone and move the shader to compile_shader
 
-include(joinpath(@__DIR__, "util.jl"))
+include(joinpath(@__DIR__, "util1.jl"))
 
 # whenever the window size changed (by OS or user resize) this callback function executes
 function framebuffer_size_callback(window::GLFW.Window, width::Cint, height::Cint)

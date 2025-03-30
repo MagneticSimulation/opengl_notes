@@ -1,6 +1,6 @@
 
 
-function generate_cone(;radius=1, segments=12, head=0.5)
+function generate_cone(;radius=0.1, segments=12, head=0.5)
     vertices = Float32[]
 
     for i in 0:segments-1
@@ -14,9 +14,9 @@ function generate_cone(;radius=1, segments=12, head=0.5)
     for i in 0:segments-1
         θ = 2π * i / segments
         push!(vertices, 0.0f0, 0.0f0, head)
-        push!(vertices, radius*cos(θ), radius*sin(θ), head)
+        push!(vertices, radius*cos(θ), radius*sin(θ), 0)
         θ = 2π * (i + 1) / segments
-        push!(vertices, radius*cos(θ), radius*sin(θ), head)
+        push!(vertices, radius*cos(θ), radius*sin(θ), 0)
     end
     
     return vertices

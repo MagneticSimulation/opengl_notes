@@ -72,14 +72,17 @@ glBindVertexArray(0)
 # glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
 
-
-
-
 model_loc = glGetUniformLocation(program, "model")
 view_loc = glGetUniformLocation(program, "view")
 projection_loc = glGetUniformLocation(program, "projection")
 
+model_mat = Matrix{GLfloat}(I, 4, 4)
+
 println(view_matrix(camera))
+
+positions = [
+	(i*1.0f0, j*1.0f0, 0.0f0) for i=0:8, j=0:4
+]
 
 t0 = time()
 # render loop
@@ -95,14 +98,21 @@ while !GLFW.WindowShouldClose(window)
 	glUseProgram(program)
     glBindVertexArray(vao)
 
-	t = time() - t0
-	model_mat = Matrix{GLfloat}(I, 4, 4)
-	rotate_around_axis!(model_mat, t, [1,2,3])
-
 	glUniformMatrix4fv(view_loc, 1, GL_FALSE, view_matrix(camera))
 	glUniformMatrix4fv(projection_loc, 1, GL_FALSE, projection_matrix(camera))
-	glUniformMatrix4fv(model_loc, 1, GL_FALSE, model_mat)
-	glDrawArrays(GL_TRIANGLES, 0, length(vertices))
+
+	t = time() - t0
+	for i = 1:length(positions)
+		(x, y, z) = positions[i]
+		mat = GLfloat[1 0 0 x;
+					0 1 0 y;
+					0 0 1 z;
+					0 0 0 1];
+		rotate_around_axis!(mat, t+i*pi/6, [1,2,3])
+		glUniformMatrix4fv(model_loc, 1, GL_FALSE, mat)
+		glDrawArrays(GL_TRIANGLES, 0, length(vertices))
+	end
+	
 
     # swap buffers and poll IO events
     GLFW.SwapBuffers(window)

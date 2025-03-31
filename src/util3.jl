@@ -19,9 +19,9 @@ end
 function PerspectiveCamera(fov=π/3, aspect=16/9, near=0.1f0, far=100.0f0)
     PerspectiveCamera(
         fov, aspect, near, far,
-        [0f0, 0f0, 2f0],  # position
+        [0f0, 0f0, 20f0],  # position
         [0f0, 0f0, 0f0],  # target
-        [0f0, 1f0, 10f0]   # up
+        [0f0, 1f0, 0f0]   # up
     )
 end
 

@@ -97,12 +97,12 @@ function rotate_around_axis!(matrix::Matrix{Float32}, angle_radians, axis::Vecto
     t = 1 - c
 
     # Create rotation matrix (column-major order for OpenGL)
+
     rotation = Float32[
-        t*x*x + c      t*x*y - z*s    t*x*z + y*s    0
-        t*x*y + z*s    t*y*y + c      t*y*z - x*s    0
-        t*x*z - y*s    t*y*z + x*s    t*z*z + c      0
-        0              0              0              1
+        t*x*x + c      t*x*y - z*s    t*x*z + y*s;
+        t*x*y + z*s    t*y*y + c      t*y*z - x*s; 
+        t*x*z - y*s    t*y*z + x*s    t*z*z + c;
     ]
 
-    matrix .= rotation
+    matrix[1:3, 1:3] .= rotation
 end

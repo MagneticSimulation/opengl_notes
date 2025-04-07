@@ -1,5 +1,6 @@
 
 using LinearAlgebra
+using Printf
 
 function generate_cone(;radius=0.1, segments=12, head=0.5)
     vertices = Float32[]
@@ -67,4 +68,22 @@ function generate_cone_normals(;radius=0.1, segments=12, head=0.5)
     end
     
     return vertices
+end
+
+
+mutable struct FPSCounter{T<:AbstractFloat}
+	previous_time::T
+	frame_count::Int
+end
+FPSCounter() = FPSCounter(time(), 0)
+function (obj::FPSCounter)(window::GLFW.Window)
+	current_time = time()
+	elapsed_time = current_time - obj.previous_time
+	if elapsed_time > 0.25
+		obj.previous_time = current_time
+		fps = obj.frame_count / elapsed_time
+		GC.@preserve fps GLFW.SetWindowTitle(window, @sprintf("opengl @ fps: %.2f", fps))
+		obj.frame_count = 0
+	end
+	obj.frame_count += 1
 end

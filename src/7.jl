@@ -91,6 +91,7 @@ vboRef = Ref{GLuint}(0)
 vaoRef = Ref{GLuint}(0)
 glGenVertexArrays(1, vaoRef)
 glGenBuffers(1, vboRef)
+
 vao = vaoRef[]
 vbo = vboRef[]
 glBindVertexArray(vao)
@@ -130,7 +131,7 @@ model_mat = Matrix{GLfloat}(I, 4, 4)
 println(view_matrix(camera))
 
 positions = [
-	(i*1.0f0, j*1.0f0, 0.0f0) for i=0:8, j=0:4
+	(i*1.0f0, j*1.0f0, 0.0f0) for i=0:200, j=0:200
 ]
 
 aspect_ratio = SCR_WIDTH/SCR_HEIGHT
@@ -141,9 +142,10 @@ object_color = [1.0f0, 0.5f0, 0.31f0]  # 物体颜色
 
 t0 = time()
 # render loop
+updatefps = FPSCounter()
 while !GLFW.WindowShouldClose(window)
     processInput(window)
-
+    updatefps(window)
     # render
     glClearColor(0.2, 0.3, 0.3, 1.0)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -167,7 +169,7 @@ while !GLFW.WindowShouldClose(window)
 					0 1 0 y;
 					0 0 1 z;
 					0 0 0 1];
-		rotate_around_axis!(mat, t+i*pi/6, [1,0,0])
+		#rotate_around_axis!(mat, t+i*pi/6, [1,0,0])
 		glUniformMatrix4fv(model_loc, 1, GL_FALSE, mat)
 		glDrawArrays(GL_TRIANGLES, 0, length(vertices))
 	end
